@@ -6,7 +6,10 @@ export const sendRequest = async (method, relativeUrl, data) => {
     const url = hostBaseUrl + relativeUrl;
 
     const headers = {};
-    const token = "";
+    const state = JSON.parse(localStorage.getItem("redux-state") || "{}");
+
+    let token = null;
+    if (state.user && state.user.token) token = state.user.token;
 
     // If the token exists it adds it to the authorization header
     if (token) headers.Authorization = `Bearer ${token}`;
