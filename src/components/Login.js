@@ -1,51 +1,73 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
+import { Formik, Form } from "formik";
 
-import Swal from "sweetalert2";
+import {
+  Flex,
+  useColorModeValue,
+  Stack,
+  Heading,
+  Box,
+  Input,
+} from "@chakra-ui/react";
 
-import { Container, Button, Form } from "react-bootstrap";
+import ChakraInput from "./ChakraInput";
 
-import { login } from "../utils/serverCalls";
-import { extractDataFromForm } from "../utils/utils";
+const loginSchema = Yup.object().shape({
+  email: Yup.string().email().required(),
+  password: Yup.string().min(6).required(),
+});
 
 const Login = () => {
-  const history = useHistory();
-
-  const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      const userData = extractDataFromForm(e.target);
-      const res = await login(userData);
-      console.log(res);
-      history.push("/posts");
-    } catch (error) {
-      Swal.fire(error, "", "error");
-    }
+  const handleSubmit = async (values) => {
+    console.log(values);
   };
 
   return (
-    <Container>
-      <h1>Login</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" required name="email" />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            minLength="6"
-            required
-            name="password"
-          />
-        </Form.Group>
+    <Flex
+      minH="100vh"
+      align="center"
+      justify="center"
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
+      <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6} minW="60vw">
+        <Stack align="center">
+          <Heading fontSize="4xl">Login</Heading>
+        </Stack>
+        <Box
+          rounded="lg"
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow="lg"
+          p={8}
+        >
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+            }}
+            validationSchema={loginSchema}
+            onSubmit={handleSubmit}
+          >
+            <Form>
+              <ChakraInput name="email" type="email" label="Email" />
+              <ChakraInput name="password" type="password" label="Password" />
 
-        <Button variant="primary" type="submit">
-          Login
-        </Button>
-      </Form>
-    </Container>
+              <Input
+                type="submit"
+                bg="blue.400"
+                color="white"
+                width="100%"
+                marginTop="10px"
+                _hover={{
+                  bg: "blue.500",
+                }}
+                value="Register"
+              />
+            </Form>
+          </Formik>
+        </Box>
+      </Stack>
+    </Flex>
   );
 };
 
