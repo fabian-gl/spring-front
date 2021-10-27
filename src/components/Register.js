@@ -43,7 +43,7 @@ const Register = () => {
 
   return (
     <Flex
-      minH="100vh"
+      minH="85vh"
       align="center"
       justify="center"
       bg={useColorModeValue("gray.50", "gray.800")}
