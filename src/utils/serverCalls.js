@@ -7,3 +7,10 @@ export const login = (userData) => {
 export const register = (userData) => {
   return sendRequest("post", "/auth/register", userData);
 };
+
+const serverCalls = {
+  login,
+  register,
+};
+
+export default serverCalls;

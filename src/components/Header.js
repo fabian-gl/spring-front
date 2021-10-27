@@ -1,6 +1,7 @@
-import logo from "../logo.svg";
-
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
+import logo from "../logo.svg";
 import {
   Flex,
   Button,
@@ -16,6 +17,10 @@ import {
 import { Link, useRouteMatch } from "react-router-dom";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/user/userSlice";
+
 const Header = ({
   webLinks = [
     { name: "Posts", path: "/posts" },
@@ -26,10 +31,14 @@ const Header = ({
     { name: "Login", path: "/login" },
   ],
 }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const activeTextColor = "blue.200";
   const [display, setDisplay] = useState("none");
 
-  const isAuth = false;
+  const isAuth = useSelector((state) => state.user.authenticated);
+  const { firstName } = useSelector((state) => state.user.userData);
 
   let itemsNav = webLinks.map((link, index) => (
     <ActiveLink
@@ -51,18 +60,18 @@ const Header = ({
   ));
 
   const handleLogout = () => {
-    // dispatch(logout());
+    dispatch(logout());
+    history.push("/login");
   };
 
   return (
     <nav>
       <Flex>
+        <Center>
+          <Image h="35px" w="35px" src={logo} alt="Redux" margin="10px" />
+        </Center>
         <Flex display={["none", "none", "flex", "flex"]}>
-          <Link to="/">
-            <Center>
-              <Image h="30px" src={logo} alt="Redux" margin="auto" />
-            </Center>
-          </Link>
+          <Link to="/"></Link>
           {itemsNav}
         </Flex>
         <Spacer />
@@ -79,7 +88,7 @@ const Header = ({
               cursor={"pointer"}
               minW={0}
             >
-              user
+              {firstName}
               <ChevronDownIcon />
             </MenuButton>
             <MenuList alignItems={"center"}>

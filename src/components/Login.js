@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import Swal from "sweetalert2";
 
-import { login } from "../utils/serverCalls";
+import serverCalls from "../utils/serverCalls";
 
 import {
   Flex,
@@ -18,6 +18,9 @@ import {
 
 import ChakraInput from "./ChakraInput";
 
+import { useDispatch } from "react-redux";
+import { login } from "../features/user/userSlice";
+
 const loginSchema = Yup.object().shape({
   email: Yup.string().email().required(),
   password: Yup.string().min(6).required(),
@@ -25,10 +28,14 @@ const loginSchema = Yup.object().shape({
 
 const Login = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (userData) => {
     try {
-      await login(userData);
+      const response = await serverCalls.login(userData);
+
+      const { firstName, token } = response;
+      dispatch(login({ userData: { firstName }, token }));
       history.push("/posts");
     } catch (error) {
       Swal.fire(error, "", "error");
