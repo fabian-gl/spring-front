@@ -1,13 +1,13 @@
 import React from "react";
 import {
   useColorModeValue,
-  Text,
   Heading,
   Box,
   Center,
+  Image,
 } from "@chakra-ui/react";
 
-const PostItem = ({ title, body }) => {
+const PhotoItem = ({ title, thumbnailUrl }) => {
   return (
     <Box
       sx={{
@@ -22,13 +22,15 @@ const PostItem = ({ title, body }) => {
       p={4}
     >
       <Center>
-        <Heading textAlign="center" size="lg" marginBottom="15px">
+        <Image src={thumbnailUrl} maxH="100%" maxW="100%" />
+      </Center>
+      <Center>
+        <Heading textAlign="center" size="sm" marginBottom="15px">
           {title}
         </Heading>
       </Center>
-      <Text isTruncated>{body}</Text>
     </Box>
   );
 };
 
-export default PostItem;
+export default PhotoItem;

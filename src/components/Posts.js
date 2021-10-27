@@ -3,14 +3,7 @@ import { getPosts } from "../utils/serverCalls";
 
 import PostItem from "./PostItem";
 
-import {
-  Flex,
-  useColorModeValue,
-  Stack,
-  Heading,
-  Box,
-  Center,
-} from "@chakra-ui/react";
+import { Flex, useColorModeValue, Stack, Heading, Box } from "@chakra-ui/react";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -41,8 +34,8 @@ const Posts = () => {
           py={8}
           px={[0, 0, 8]}
         >
-          {posts.map(({ title, body }) => (
-            <PostItem title={title} body={body} />
+          {posts.map(({ id, title, body }) => (
+            <PostItem key={id} title={title} body={body} />
           ))}
         </Box>
       </Stack>
