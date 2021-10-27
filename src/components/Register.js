@@ -1,7 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
+import Swal from "sweetalert2";
 
+import { register } from "../utils/serverCalls";
 import {
   Flex,
   useColorModeValue,
@@ -21,8 +25,20 @@ const registerSchema = Yup.object().shape({
 });
 
 const Register = () => {
-  const handleSubmit = async (values) => {
-    console.log(values);
+  const history = useHistory();
+
+  const handleSubmit = async (userData) => {
+    try {
+      await register(userData);
+      await Swal.fire(
+        "You have been successfully registered",
+        "Now log in please",
+        "success"
+      );
+      history.push("/login");
+    } catch (error) {
+      Swal.fire(error, "", "error");
+    }
   };
 
   return (

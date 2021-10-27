@@ -1,6 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
+import Swal from "sweetalert2";
+
+import { login } from "../utils/serverCalls";
 
 import {
   Flex,
@@ -19,8 +24,15 @@ const loginSchema = Yup.object().shape({
 });
 
 const Login = () => {
-  const handleSubmit = async (values) => {
-    console.log(values);
+  const history = useHistory();
+
+  const handleSubmit = async (userData) => {
+    try {
+      await login(userData);
+      history.push("/posts");
+    } catch (error) {
+      Swal.fire(error, "", "error");
+    }
   };
 
   return (
