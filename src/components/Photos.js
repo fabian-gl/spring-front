@@ -116,7 +116,7 @@ const Photos = () => {
     if (width < 400) numItems = 1;
     else if (width < 500) numItems = 2;
     else if (width < 700) numItems = 4;
-    else numItems = 5;
+    else numItems = 7;
     setPageRange(numItems);
   }, [width]);
 
