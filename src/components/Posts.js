@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getPosts } from "../utils/serverCalls";
-
+import Swal from "sweetalert2";
 import PostItem from "./PostItem";
+import NothingToShow from "./NothingToShow";
 
 import { Flex, useColorModeValue, Stack, Heading, Box } from "@chakra-ui/react";
 
@@ -9,9 +10,14 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
 
   const getAllPosts = async () => {
-    const fetchedPosts = await getPosts();
-    setPosts(fetchedPosts);
+    try {
+      const posts = await getPosts();
+      setPosts(posts);
+    } catch (error) {
+      Swal.fire(error, "", "error");
+    }
   };
+
   useEffect(() => {
     getAllPosts();
   }, []);
@@ -34,9 +40,13 @@ const Posts = () => {
           py={8}
           px={[0, 0, 8]}
         >
-          {posts.map(({ id, title, body }) => (
-            <PostItem key={id} title={title} body={body} />
-          ))}
+          {posts.length ? (
+            posts.map(({ id, title, body }) => (
+              <PostItem key={id} title={title} body={body} />
+            ))
+          ) : (
+            <NothingToShow message="No posts to show" />
+          )}
         </Box>
       </Stack>
     </Flex>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import ReactPaginate from "react-paginate";
 import "./paginator.css";
+import Swal from "sweetalert2";
 
 import { getPhotos } from "../utils/serverCalls";
 import PhotoItem from "./PhotoItem";
@@ -14,6 +15,7 @@ import {
   Stack,
   Heading,
   SimpleGrid,
+  Box,
 } from "@chakra-ui/react";
 
 const PhotosSlice = ({ photosSlice }) => {
@@ -39,7 +41,9 @@ const PhotosSlice = ({ photosSlice }) => {
             ))}
           </SimpleGrid>
         ) : (
-          <NothingToShow message="No pictures to show" />
+          <Box rounded="lg" bg={colorMode} boxShadow="lg" py={8} px={[0, 0, 8]}>
+            <NothingToShow message="No pictures to show" />
+          </Box>
         )}
       </Stack>
     </Flex>
@@ -56,13 +60,17 @@ const Photos = () => {
 
   useEffect(() => {
     const getSomePhotos = async () => {
-      const response = await getPhotos(limit, offset);
-      setTotalCount(response.count);
-      setPhotos(response.photos);
-      setPageCount(Math.ceil(response.count / limit));
+      try {
+        const response = await getPhotos(limit, offset);
+        setTotalCount(response.count);
+        setPhotos(response.photos);
+        setPageCount(Math.ceil(response.count / limit));
+      } catch (error) {
+        Swal.fire(error, "", "error");
+      }
     };
 
-    // getSomePhotos();
+    getSomePhotos();
   }, [offset]);
 
   // Invoke when user click to request another page.
