@@ -14,18 +14,23 @@ Then, in the project directory you can run
 
 ### `npm start`
 
-In the project directory, you can run:
-
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Dependencies
 
 Chakra: User interfase
+
 React-router-dom: Navigation
+
 Axios: Requests to API
+
 Redux: Handle state
+
 Formik: Forms
+
 Yup: Validations
+
 Sweet-alert2: Success and error messages
+
 react-paginate: Pagination for photos
