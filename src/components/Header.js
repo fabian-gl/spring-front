@@ -40,6 +40,8 @@ const Header = ({
   const isAuth = useSelector((state) => state.user.authenticated);
   const { firstName } = useSelector((state) => state.user.userData);
 
+  if (!isAuth) webLinks = [];
+
   let itemsNav = webLinks.map((link, index) => (
     <ActiveLink
       key={index}
