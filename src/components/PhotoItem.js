@@ -7,9 +7,11 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-const PhotoItem = ({ title, thumbnailUrl }) => {
+const PhotoItem = ({ title, thumbnailUrl, onClick }) => {
   return (
     <Box
+      cursor="pointer"
+      onClick={onClick}
       sx={{
         _hover: { bg: "#e1e1e1" },
         transition: ".3s ease-in-out",
