@@ -13,7 +13,7 @@ export const getPosts = () => {
 };
 
 export const getPhotos = (limit, offset) => {
-  return sendRequest("get", "/photos");
+  return sendRequest("get", "/photos", null, { limit, offset });
 };
 
 const serverCalls = {

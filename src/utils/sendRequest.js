@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const sendRequest = async (method, relativeUrl, data) => {
+export const sendRequest = async (method, relativeUrl, data, params) => {
   return new Promise((resolve, reject) => {
     const hostBaseUrl = "http://localhost:5000";
     const url = hostBaseUrl + relativeUrl;
@@ -19,6 +19,7 @@ export const sendRequest = async (method, relativeUrl, data) => {
       url,
       headers,
       data,
+      params,
     })
       .then((response) => {
         resolve(response.data);
