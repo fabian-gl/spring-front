@@ -4,15 +4,25 @@ import Swal from "sweetalert2";
 import PostItem from "./PostItem";
 import NothingToShow from "./NothingToShow";
 
-import { Flex, useColorModeValue, Stack, Heading, Box } from "@chakra-ui/react";
+import {
+  Flex,
+  useColorModeValue,
+  Stack,
+  Heading,
+  Box,
+  Spinner,
+  Center,
+} from "@chakra-ui/react";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getAllPosts = async () => {
     try {
       const posts = await getPosts();
       setPosts(posts);
+      setLoading(false);
     } catch (error) {
       Swal.fire(error, "", "error");
     }
@@ -40,7 +50,11 @@ const Posts = () => {
           py={8}
           px={[0, 0, 8]}
         >
-          {posts.length ? (
+          {loading ? (
+            <Center>
+              <Spinner />
+            </Center>
+          ) : posts.length ? (
             posts.map(({ id, title, body }) => (
               <PostItem key={id} title={title} body={body} />
             ))

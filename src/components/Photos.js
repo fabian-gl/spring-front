@@ -16,9 +16,11 @@ import {
   Heading,
   SimpleGrid,
   Box,
+  Center,
+  Spinner,
 } from "@chakra-ui/react";
 
-const PhotosSlice = ({ photosSlice }) => {
+const PhotosSlice = ({ photosSlice, loading }) => {
   const colorMode = useColorModeValue("gray.50", "gray.800");
   return (
     <Flex minH="85vh" align="center" justify="center" bg={colorMode}>
@@ -42,7 +44,13 @@ const PhotosSlice = ({ photosSlice }) => {
           </SimpleGrid>
         ) : (
           <Box rounded="lg" bg={colorMode} boxShadow="lg" py={8} px={[0, 0, 8]}>
-            <NothingToShow message="No pictures to show" />
+            {loading ? (
+              <Center>
+                <Spinner />
+              </Center>
+            ) : (
+              <NothingToShow message="No pictures to show" />
+            )}
           </Box>
         )}
       </Stack>
@@ -55,16 +63,20 @@ const Photos = () => {
   const [offset, setOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const limit = 10;
 
   useEffect(() => {
     const getSomePhotos = async () => {
       try {
+        setLoading(true);
         const response = await getPhotos(limit, offset);
+
         setTotalCount(response.count);
         setPhotos(response.photos);
         setPageCount(Math.ceil(response.count / limit));
+        setLoading(false);
       } catch (error) {
         Swal.fire(error, "", "error");
       }
@@ -81,7 +93,7 @@ const Photos = () => {
 
   return (
     <>
-      <PhotosSlice photosSlice={photos} />
+      <PhotosSlice photosSlice={photos} loading={loading} />
       <Flex>
         <ReactPaginate
           breakLabel="..."
